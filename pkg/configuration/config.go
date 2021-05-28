@@ -34,7 +34,7 @@ func InitFlags() {
 	var defaultConfigPath string = filepath.Join(".tswitch", "config.yaml")
 
 	home, err := os.UserHomeDir()
-	if err != nil {
+	if err == nil {
 		defaultConfigPath = filepath.Join(home, ".tswitch", "config.yaml")
 	}
 

@@ -35,12 +35,6 @@ func main() {
 	}
 	log.SetLevel(level)
 
-	if len(os.Args) <= 1 {
-		fmt.Fprintf(flag.CommandLine.Output(), "Usage of %s:\n", os.Args[0])
-		flag.PrintDefaults()
-		os.Exit(1)
-	}
-
 	if *displayVersion {
 		fmt.Println(version)
 		os.Exit(0)
