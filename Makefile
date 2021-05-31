@@ -17,6 +17,9 @@ ${BINARY}:
 
 build: ${BINARY}
 
+goreleaser:
+	goreleaser release --snapshot --rm-dist
+
 .PHONY: mocks
 mocks:
 	@go install github.com/golang/mock/mockgen@v${MOCKGEN_VERSION}
