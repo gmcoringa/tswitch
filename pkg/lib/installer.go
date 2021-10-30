@@ -110,7 +110,7 @@ func (installer *LocalInstaller) Install(constraint string) {
 		log.Error(error)
 		os.Exit(1)
 	} else {
-		lio.SymLink(installer.BinPath, installment.Path)
+		lio.ForceSymLink(installer.BinPath, installment.Path)
 		error = lio.SetExecutable(installment.Path)
 		if error != nil {
 			log.Error("Failed to change permissions of ", installment.Path)

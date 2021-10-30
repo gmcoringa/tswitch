@@ -153,5 +153,6 @@ func SetExecutable(file string) error {
 		return fmt.Errorf("file %s is a directory", file)
 	}
 
+	log.Debug("Set executable ", file)
 	return os.Chmod(file, 0755)
 }
