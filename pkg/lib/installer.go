@@ -85,7 +85,7 @@ func (installer *LocalInstaller) Install(constraint string) {
 			log.Warn("Failed to update db [", installer.Target.Name(), "] with current version ", version, ", ignoring")
 		}
 
-		lio.SymLink(installer.BinPath, versionInstall.Path)
+		lio.ForceSymLink(installer.BinPath, versionInstall.Path)
 		logInstallation(installer.Target.Name(), version)
 		return
 	}
