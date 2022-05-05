@@ -21,6 +21,7 @@ jobs:
           CGO_ENABLED: 0
         with:
           version: v1.32.2
+          skip-go-installation: true
 
   test:
     name: Test on Linux
