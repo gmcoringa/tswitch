@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"sort"
 
-	"github.com/Masterminds/semver"
+	semver "github.com/Masterminds/semver/v3"
 	"github.com/gmcoringa/tswitch/pkg/configuration"
 	"github.com/gmcoringa/tswitch/pkg/db"
 	lio "github.com/gmcoringa/tswitch/pkg/io"
