@@ -58,6 +58,7 @@ func TestCurrentVersionInUse(testing *testing.T) {
 	subject.Install(constraint)
 }
 
+// nolint:gocritic
 func TestVersionExistsAndIsNotCurrent(testing *testing.T) {
 	controller := gomock.NewController(testing)
 	defer controller.Finish()
@@ -100,6 +101,7 @@ func TestVersionExistsAndIsNotCurrent(testing *testing.T) {
 	subject.Install(constraint)
 }
 
+// nolint:dupl
 func TestVersionDoesNotExists(testing *testing.T) {
 	controller := gomock.NewController(testing)
 	defer controller.Finish()
@@ -144,11 +146,12 @@ func TestVersionDoesNotExists(testing *testing.T) {
 	subject.Install(constraint)
 }
 
+// nolint:dupl
 func TestVersionMinorVersionConstraint(testing *testing.T) {
 	controller := gomock.NewController(testing)
 	defer controller.Finish()
 
-	target := "test_version_does_not_exists"
+	target := "test_version_minor_constraint"
 	path := filepath.Join(config.CacheDir, target, target)
 	constraint := "~1.0"
 	version := "1.0.2"
@@ -188,11 +191,12 @@ func TestVersionMinorVersionConstraint(testing *testing.T) {
 	subject.Install(constraint)
 }
 
+// nolint:dupl
 func TestVersionMajorVersionConstraint(testing *testing.T) {
 	controller := gomock.NewController(testing)
 	defer controller.Finish()
 
-	target := "test_version_does_not_exists"
+	target := "test_version_major_constraint"
 	path := filepath.Join(config.CacheDir, target, target)
 	constraint := "~1"
 	version := "1.1.0"
