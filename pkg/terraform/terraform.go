@@ -42,12 +42,12 @@ func (tf Terraform) ListVersions() ([]string, error) {
 	}
 
 	var versions []string
-	regex := regexp.MustCompile(`\/(\d+\.\d+\.\d+)\/`)
+	regex := regexp.MustCompile(`\/(\d+\.\d+\.\d+)\/?`)
 
 	for item := range result {
 		if regex.MatchString(result[item]) {
 			str := regex.FindString(result[item])
-			trimstr := strings.Trim(str, "/")
+			trimstr := strings.Trim(str, "/\"")
 			versions = append(versions, trimstr)
 		}
 	}
