@@ -18,7 +18,7 @@ ${BINARY}:
 build: ${BINARY}
 
 goreleaser:
-	goreleaser release --snapshot --rm-dist
+	goreleaser release --snapshot --clean
 
 .PHONY: mocks
 mocks:
