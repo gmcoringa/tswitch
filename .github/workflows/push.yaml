@@ -12,8 +12,8 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.16
       - uses: golangci/golangci-lint-action@v2
@@ -27,12 +27,12 @@ jobs:
     name: Test on Linux
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - uses: actions/setup-go@v1
+        uses: docker/setup-qemu-action@v3
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.16
       - run: go test -cover -coverprofile=coverage.txt -covermode=atomic ./...
@@ -44,8 +44,8 @@ jobs:
     runs-on: macos-latest
     continue-on-error: true # Don't let macos test fail whole workflow
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.16
       - name: Install MacOS Docker
@@ -62,27 +62,27 @@ jobs:
       - test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.16
       - name: GoReleaser
-        uses: goreleaser/goreleaser-action@v2
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
           args: release --snapshot --clean
       - name: Capture Linux Binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: tswitch-linux
           path: dist/tswitch_linux_amd64/tswitch
       - name: Capture Windows Binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: tswitch-windows
           path: dist/tswitch_windows_amd64/tswitch.exe
       - name: Capture MacOS Binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: tswitch-macos
           path: dist/tswitch_darwin_amd64/tswitch
@@ -95,14 +95,14 @@ jobs:
       - test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v1
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.16
       - name: GoReleaser
-        uses: goreleaser/goreleaser-action@v1
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
           args: release --clean
