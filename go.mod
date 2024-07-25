@@ -3,7 +3,7 @@ module github.com/gmcoringa/tswitch
 go 1.15
 
 require (
-	github.com/Masterminds/semver/v3 v3.1.1
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20220407094043-a94812496cf5 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
