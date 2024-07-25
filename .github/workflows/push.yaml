@@ -70,7 +70,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
-          args: release --snapshot --rm-dist
+          args: release --snapshot --clean
       - name: Capture Linux Binary
         uses: actions/upload-artifact@v2
         with:

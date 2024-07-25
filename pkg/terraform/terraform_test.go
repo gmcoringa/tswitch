@@ -14,7 +14,7 @@ func TestListVersions(testing *testing.T) {
 	result, _ := subject.ListVersions()
 
 	assert.NotEmpty(testing, result)
-	assert.Contains(testing, result, "0.14.0")
+	assert.Contains(testing, result, "1.9.1")
 }
 
 func TestAddNewVersion(testing *testing.T) {
@@ -24,8 +24,8 @@ func TestAddNewVersion(testing *testing.T) {
 
 	subject := tf.Init()
 
-	err = subject.AddNewVersion("0.14.0", "./test_data/terraform_0.14.0")
+	err = subject.AddNewVersion("1.9.1", "./test_data/terraform_1.9.1")
 
 	assert.NoError(testing, err)
-	assert.FileExists(testing, "./test_data/terraform_0.14.0")
+	assert.FileExists(testing, "./test_data/terraform_1.9.1")
 }

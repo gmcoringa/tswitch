@@ -15,7 +15,7 @@ func TestListVersions(testing *testing.T) {
 
 	assert.NoError(testing, err)
 	assert.NotEmpty(testing, result)
-	assert.Contains(testing, result, "0.28.0")
+	assert.Contains(testing, result, "0.64.0")
 }
 
 func TestAddNewVersion(testing *testing.T) {
@@ -25,7 +25,7 @@ func TestAddNewVersion(testing *testing.T) {
 
 	subject := tg.Init()
 
-	err = subject.AddNewVersion("0.28.0", "./test_data/terragrunt_test_add_new_version")
+	err = subject.AddNewVersion("0.64.0", "./test_data/terragrunt_test_add_new_version")
 
 	assert.NoError(testing, err)
 	assert.FileExists(testing, "./test_data/terragrunt_test_add_new_version")
