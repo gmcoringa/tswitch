@@ -9,7 +9,7 @@ require (
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/go-git/go-git/v5 v5.4.2
-	github.com/golang/mock v1.5.0
+	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/hcl/v2 v2.12.0
 	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25 // indirect
