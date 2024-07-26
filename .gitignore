@@ -20,3 +20,5 @@ checksums.txt
 
 # Temporarily testing data directory
 test_data/
+
+golangci-lint

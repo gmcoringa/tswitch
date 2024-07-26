@@ -31,7 +31,7 @@ func Load() (*Config, error) {
 }
 
 func InitFlags() {
-	var defaultConfigPath string = filepath.Join(".tswitch", "config.yaml")
+	var defaultConfigPath = filepath.Join(".tswitch", "config.yaml")
 
 	home, err := os.UserHomeDir()
 	if err == nil {

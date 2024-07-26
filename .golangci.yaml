@@ -1,7 +1,12 @@
 run:
   timeout: 3m
-  skip-dirs:
+
+issues:
+  # exclude-use-default: true
+  exclude-dirs:
     - mocks
+  exclude-files:
+  - ".*_test.go$"
 
 linters-settings:
   gocyclo:
@@ -12,15 +17,18 @@ linters-settings:
       - ifElseChain
 
 linters:
+  disable-all: true
   enable:
-  - megacheck
+  - gosimple
+  - staticcheck
+  - unused
   - govet
-  - golint
+  - revive
   - gocyclo
   - gosec
   - unconvert
   - dupl
   - nakedret
   - prealloc
-  - scopelint
+  - exportloopref
   - gocritic

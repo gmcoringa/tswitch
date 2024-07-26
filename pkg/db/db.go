@@ -37,22 +37,22 @@ func Init(config *configuration.Config) (Database, error) {
 }
 
 func (db LocalDatabase) Add(target string, installment *BinVersion, current bool) error {
-	error := db.driver.Write(target, installment.Version, installment)
+	err := db.driver.Write(target, installment.Version, installment)
 
-	if error != nil {
+	if err != nil {
 		log.Error("Failed to save installment ", *installment)
-		return error
+		return err
 	}
 
 	if current {
-		error = db.driver.Write(target, currentVersion, installment)
+		err := db.driver.Write(target, currentVersion, installment)
 
-		if error != nil {
+		if err != nil {
 			log.Error("Failed to set current version for ", *installment)
 		}
 	}
 
-	return error
+	return err
 }
 
 func (db LocalDatabase) Get(target string, version string) (*BinVersion, error) {

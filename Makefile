@@ -9,6 +9,7 @@ MAJOR_VERSION     = $(word 1, $(subst ., ,$(VERSION)))
 MINOR_VERSION     = $(word 2, $(subst ., ,$(VERSION)))
 PATCH_VERSION     = $(word 3, $(subst ., ,$(word 1,$(subst -, , $(VERSION)))))
 NEW_VERSION      ?= $(MAJOR_VERSION).$(MINOR_VERSION).$(shell echo $$(( $(PATCH_VERSION) + 1)) )
+GO_LINT           = ./golangci-lint
 
 all: build
 
@@ -18,7 +19,7 @@ ${BINARY}:
 build: ${BINARY}
 
 goreleaser:
-	goreleaser release --snapshot --rm-dist
+	goreleaser release --snapshot --clean
 
 .PHONY: mocks
 mocks:
@@ -53,3 +54,10 @@ ifneq ($(shell git status -s),)
 endif
 	git tag -a -m "releasing v$(NEW_VERSION)" v$(NEW_VERSION)
 	git push origin v$(NEW_VERSION)
+
+golangci-lint:
+	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./ v1.59.1
+	@chmod +x ${GO_LINT}
+
+lint: golangci-lint
+	${GO_LINT} run -v
