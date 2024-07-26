@@ -36,9 +36,9 @@ func (tf Terraform) Name() string {
 
 // ListVersions :  Get the list of available terraform versions
 func (tf Terraform) ListVersions() ([]string, error) {
-	result, error := getURLContent(tf.hashiURL)
-	if error != nil {
-		return nil, error
+	result, err := getURLContent(tf.hashiURL)
+	if err != nil {
+		return nil, err
 	}
 
 	var versions []string

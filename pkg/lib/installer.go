@@ -41,35 +41,35 @@ func CreateInstaller(config *configuration.Config, database db.Database, install
 
 // Install : Install the provided version in the argument
 func (installer *LocalInstaller) Install(constraint string) {
-	error := lio.CreateDirIfNotExist(filepath.Join(installer.Config.CacheDir, installer.Target.Name()))
-	if error != nil {
+	err := lio.CreateDirIfNotExist(filepath.Join(installer.Config.CacheDir, installer.Target.Name()))
+	if err != nil {
 		log.Error("Failed to create cache dir for binaries: ", filepath.Join(installer.Config.CacheDir, installer.Target.Name()))
-		log.Fatal(error)
+		log.Fatal(err)
 	}
 
-	error = lio.CreateDirIfNotExist(installer.Config.InstallDir)
-	if error != nil {
+	err = lio.CreateDirIfNotExist(installer.Config.InstallDir)
+	if err != nil {
 		log.Error("Failed to create directory for binaries usage: ", installer.Config.InstallDir)
-		log.Fatal(error)
+		log.Fatal(err)
 	}
 
-	versionList, error := installer.Target.ListVersions()
-	if error != nil {
+	versionList, err := installer.Target.ListVersions()
+	if err != nil {
 		log.Errorln("Error looking for available versions")
-		log.Errorln(error)
+		log.Errorln(err)
 		os.Exit(1)
 	}
 
-	version, error := findVersion(constraint, versionList)
-	if error != nil {
+	version, err := findVersion(constraint, versionList)
+	if err != nil {
 		log.Error("Failed to find matching version for ", installer.Target.Name(), " with constraint ", constraint)
-		log.Error(error)
+		log.Error(err)
 		os.Exit(1)
 	}
 
 	// Current version already in use
-	currentInstall, error := installer.DB.GetCurrent(installer.Target.Name())
-	if error == nil && currentInstall.Version == version {
+	currentInstall, err := installer.DB.GetCurrent(installer.Target.Name())
+	if err == nil && currentInstall.Version == version {
 		// Force symbolic link for requested version
 		lio.ForceSymLink(installer.BinPath, currentInstall.Path)
 		logInstallation(installer.Target.Name(), version)
@@ -77,11 +77,11 @@ func (installer *LocalInstaller) Install(constraint string) {
 	}
 
 	// Version already installed, just set as current
-	versionInstall, error := installer.DB.Get(installer.Target.Name(), version)
-	if error == nil {
+	versionInstall, err := installer.DB.Get(installer.Target.Name(), version)
+	if err == nil {
 		log.Debug("Terraform version ", version, "found, setting as current version")
-		error = installer.DB.SetCurrent(installer.Target.Name(), version)
-		if error != nil {
+		err = installer.DB.SetCurrent(installer.Target.Name(), version)
+		if err != nil {
 			log.Warn("Failed to update db [", installer.Target.Name(), "] with current version ", version, ", ignoring")
 		}
 
@@ -93,10 +93,10 @@ func (installer *LocalInstaller) Install(constraint string) {
 	// Version not cached, download needed
 	binName := fmt.Sprintf("%s_%s", installer.Target.Name(), version)
 	destination := filepath.Join(installer.Config.CacheDir, installer.Target.Name(), binName)
-	error = installer.Target.AddNewVersion(version, destination)
-	if error != nil {
+	err = installer.Target.AddNewVersion(version, destination)
+	if err != nil {
 		log.Error("Failed to set new version [", version, "] on destination ", destination)
-		log.Error(error)
+		log.Error(err)
 		os.Exit(1)
 	}
 	installment := db.BinVersion{
@@ -104,22 +104,22 @@ func (installer *LocalInstaller) Install(constraint string) {
 		Path:    destination,
 	}
 
-	error = installer.DB.Add(installer.Target.Name(), &installment, true)
-	if error != nil {
+	err = installer.DB.Add(installer.Target.Name(), &installment, true)
+	if err != nil {
 		log.Error("Failed to set new version for ", installer.Target.Name(), " in DB, version info: ", installment)
-		log.Error(error)
+		log.Error(err)
 		os.Exit(1)
-	} else {
-		lio.ForceSymLink(installer.BinPath, installment.Path)
-		error = lio.SetExecutable(installment.Path)
-		if error != nil {
-			log.Error("Failed to change permissions of ", installment.Path)
-			log.Error(error)
-			os.Exit(1)
-		}
-
-		logInstallation(installer.Target.Name(), version)
 	}
+	
+	lio.ForceSymLink(installer.BinPath, installment.Path)
+	err = lio.SetExecutable(installment.Path)
+	if err != nil {
+		log.Error("Failed to change permissions of ", installment.Path)
+		log.Error(err)
+		os.Exit(1)
+	}
+
+	logInstallation(installer.Target.Name(), version)
 }
 
 func logInstallation(target string, version string) {
