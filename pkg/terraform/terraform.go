@@ -3,7 +3,6 @@ package terraform
 import (
 	"archive/zip"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -60,7 +59,7 @@ func (tf Terraform) ListVersions() ([]string, error) {
 func (tf Terraform) AddNewVersion(version string, destination string) error {
 	url := tf.hashiURL + version + "/" + tf.installVersion + version + "_" + runtime.GOOS + "_" + runtime.GOARCH + ".zip"
 
-	tempDir, err := ioutil.TempDir(os.TempDir(), "tswitch-")
+	tempDir, err := os.MkdirTemp(os.TempDir(), "tswitch-")
 	if err != nil {
 		log.Error("Failed to create temporaly directory for download binaries in ", tempDir)
 		return err
@@ -100,7 +99,7 @@ func getURLContent(url string) ([]string, error) { //nolint: gosec
 	}
 
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
+	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		log.Error("Error reading body")
 		return nil, err
