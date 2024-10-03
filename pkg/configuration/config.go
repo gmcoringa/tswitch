@@ -2,7 +2,6 @@ package configuration
 
 import (
 	"flag"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -72,7 +71,7 @@ func loadConfig() (*Config, error) {
 func loadConfigFromDisk() (*Config, error) {
 	log.Info("Loading configuration from file: ", *configPath)
 
-	configFile, err := ioutil.ReadFile(*configPath)
+	configFile, err := os.ReadFile(*configPath)
 	if os.IsNotExist(err) || err != nil {
 		log.Debug("File or not found: ", *configPath)
 		log.Debug(err)
