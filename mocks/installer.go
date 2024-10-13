@@ -82,6 +82,20 @@ func (mr *MockResolverMockRecorder) AddNewVersion(version, destination interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddNewVersion", reflect.TypeOf((*MockResolver)(nil).AddNewVersion), version, destination)
 }
 
+// Implementation mocks base method.
+func (m *MockResolver) Implementation() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Implementation")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Implementation indicates an expected call of Implementation.
+func (mr *MockResolverMockRecorder) Implementation() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Implementation", reflect.TypeOf((*MockResolver)(nil).Implementation))
+}
+
 // ListVersions mocks base method.
 func (m *MockResolver) ListVersions() ([]string, error) {
 	m.ctrl.T.Helper()
