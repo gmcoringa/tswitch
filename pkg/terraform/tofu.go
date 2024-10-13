@@ -133,7 +133,12 @@ func extractTarGz(gzipStream io.Reader, destination string) error {
 			return err
 		}
 
-		target := filepath.Join(destination, header.Name)
+		// Clean and validate the path
+		cleanedName := filepath.Clean(header.Name)
+		if strings.Contains(cleanedName, "..") {
+			return fmt.Errorf("invalid file path: %s", header.Name)
+		}
+		target := filepath.Join(destination, cleanedName)
 
 		switch header.Typeflag {
 		case tar.TypeDir:
