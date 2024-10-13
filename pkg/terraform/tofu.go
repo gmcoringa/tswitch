@@ -120,7 +120,7 @@ func extractTarGz(gzipStream io.Reader, destination string) error {
 
 	tarReader := tar.NewReader(uncompressedStream)
 	// Create destination directory
-	if err := os.MkdirAll(destination, os.FileMode(os.ModePerm)); err != nil {
+	if err := os.MkdirAll(destination, 0755); err != nil {
 		return err
 	}
 
@@ -152,9 +152,16 @@ func extractTarGz(gzipStream io.Reader, destination string) error {
 			if err != nil {
 				return err
 			}
-			if _, err := io.Copy(file, tarReader); err != nil {
-				file.Close()
-				return err
+
+			for {
+				_, err := io.CopyN(file, tarReader, 1024)
+				if err != nil {
+					if err == io.EOF {
+						break
+					}
+					file.Close()
+					return err
+				}
 			}
 			file.Close()
 		default:
