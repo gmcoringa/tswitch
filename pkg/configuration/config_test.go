@@ -11,11 +11,13 @@ func init() {
 	configPathTest := "./test_config.yaml"
 	installDirTest := "/installDir"
 	cacheDirTest := "/cacheDir"
+	tfImplTest := "terraform"
 
 	hcl = &hclTest
 	configPath = &configPathTest
 	installDir = &installDirTest
 	cacheDir = &cacheDirTest
+	tfImpl = &tfImplTest
 }
 
 func TestConfigFileDoesExists(testing *testing.T) {
@@ -94,4 +96,29 @@ func TestSetCacheDirFromConfig(testing *testing.T) {
 	config, _ := loadConfig()
 
 	assert.Equal(testing, "/tmp/tsiwtch/data", config.CacheDir)
+}
+
+func TestSetDefaultTerraformImplementationWhenConfigIsMissing(testing *testing.T) {
+	validConfig := "./test_config_empty.yaml"
+	configPath = &validConfig
+	config, _ := loadConfig()
+
+	assert.Equal(testing, *tfImpl, config.TerraformImpl)
+}
+
+func TestSetTerraformImplementationFromConfig(testing *testing.T) {
+	validConfig := "./test_config.yaml"
+	configPath = &validConfig
+	config, _ := loadConfig()
+
+	assert.Equal(testing, "tofu", config.TerraformImpl)
+}
+
+func TestSetInvalidTerraformImplementation(testing *testing.T) {
+	validConfig := "./test_config_empty.yaml"
+	configPath = &validConfig
+	*tfImpl = "unknown"
+	_, err := loadConfig()
+
+	assert.Error(testing, err)
 }

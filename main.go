@@ -58,7 +58,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	tfResolver := tf.Init()
+	tfResolver := tf.Init(configuration)
 	terraform := lib.CreateInstaller(configuration, db, tfResolver)
 	terraform.Install(constraints.Terraform)
 

@@ -1,6 +1,8 @@
 # Terragrunt and Terraform switcher [![push](https://github.com/gmcoringa/tswitch/workflows/push/badge.svg?branch=main&event=push)](https://github.com//gmcoringa/tswitch/actions)
 
-The `tswitch` command line tool switches between different versions of [terraform](https://www.terraform.io/) and [terragrunt](https://terragrunt.gruntwork.io/) looking for constraints in `terragrunt.hcl` file. If you wish to use other methods, there are other switches that you may use. 
+The `tswitch` command line tool switches between different versions of [terraform](https://www.terraform.io/) and [terragrunt](https://terragrunt.gruntwork.io/) looking for constraints in `terragrunt.hcl` file. If you wish to use other methods, there are other switches that you may use.
+
+The `tswitch` command also supports [OpenTofu](https://github.com/opentofu/opentofu) as an alternative to [terraform](https://www.terraform.io/). Refer to the flags or configuration file details below for instructions on how to switch between Terraform implementations.
 
 ## Installation
 
@@ -32,6 +34,7 @@ All command line options are also supported by a configuration file, ex:
 terragruntFile: ./terragrunt.hcl
 installDir: /tmp/tswitch/bin
 cacheDir: /tmp/tsiwtch/data
+terraformImplementation: terraform # valid values are terraform or tofu
 ```
 
 Use the flag `-config` to set the path for a configuration file.

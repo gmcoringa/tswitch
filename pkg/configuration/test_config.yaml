@@ -2,3 +2,4 @@ terragruntFile: ./terragrunt.hcl
 installDir: /tmp/tswitch/bin
 cacheDir: /tmp/tsiwtch/data
 ageInSeconds: 3600
+terraformImplementation: tofu

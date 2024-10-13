@@ -33,6 +33,10 @@ func (tg Terragrunt) Name() string {
 	return tg.name
 }
 
+func (tg Terragrunt) Implementation() string {
+	return tg.name
+}
+
 // ListVersions :  Get the list of available terragrunt versions
 func (tg Terragrunt) ListVersions() ([]string, error) {
 	// Create the remote with repository URL

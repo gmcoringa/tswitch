@@ -20,6 +20,7 @@ type Installer interface {
 type Resolver interface {
 	ListVersions() ([]string, error)
 	Name() string
+	Implementation() string
 	AddNewVersion(version string, destination string) error
 }
 
@@ -41,9 +42,9 @@ func CreateInstaller(config *configuration.Config, database db.Database, install
 
 // Install : Install the provided version in the argument
 func (installer *LocalInstaller) Install(constraint string) {
-	err := lio.CreateDirIfNotExist(filepath.Join(installer.Config.CacheDir, installer.Target.Name()))
+	err := lio.CreateDirIfNotExist(filepath.Join(installer.Config.CacheDir, installer.Target.Implementation()))
 	if err != nil {
-		log.Error("Failed to create cache dir for binaries: ", filepath.Join(installer.Config.CacheDir, installer.Target.Name()))
+		log.Error("Failed to create cache dir for binaries: ", filepath.Join(installer.Config.CacheDir, installer.Target.Implementation()))
 		log.Fatal(err)
 	}
 
@@ -62,37 +63,37 @@ func (installer *LocalInstaller) Install(constraint string) {
 
 	version, err := findVersion(constraint, versionList)
 	if err != nil {
-		log.Error("Failed to find matching version for ", installer.Target.Name(), " with constraint ", constraint)
+		log.Error("Failed to find matching version for ", installer.Target.Implementation(), " with constraint ", constraint)
 		log.Error(err)
 		os.Exit(1)
 	}
 
 	// Current version already in use
-	currentInstall, err := installer.DB.GetCurrent(installer.Target.Name())
+	currentInstall, err := installer.DB.GetCurrent(installer.Target.Implementation())
 	if err == nil && currentInstall.Version == version {
 		// Force symbolic link for requested version
 		lio.ForceSymLink(installer.BinPath, currentInstall.Path)
-		logInstallation(installer.Target.Name(), version)
+		logInstallation(installer.Target.Implementation(), version)
 		return
 	}
 
 	// Version already installed, just set as current
-	versionInstall, err := installer.DB.Get(installer.Target.Name(), version)
+	versionInstall, err := installer.DB.Get(installer.Target.Implementation(), version)
 	if err == nil {
-		log.Debug("Terraform version ", version, "found, setting as current version")
-		err = installer.DB.SetCurrent(installer.Target.Name(), version)
+		log.Debug(installer.Target.Implementation(), "version ", version, "found, setting as current version")
+		err = installer.DB.SetCurrent(installer.Target.Implementation(), version)
 		if err != nil {
-			log.Warn("Failed to update db [", installer.Target.Name(), "] with current version ", version, ", ignoring")
+			log.Warn("Failed to update db [", installer.Target.Implementation(), "] with current version ", version, ", ignoring")
 		}
 
 		lio.ForceSymLink(installer.BinPath, versionInstall.Path)
-		logInstallation(installer.Target.Name(), version)
+		logInstallation(installer.Target.Implementation(), version)
 		return
 	}
 
 	// Version not cached, download needed
-	binName := fmt.Sprintf("%s_%s", installer.Target.Name(), version)
-	destination := filepath.Join(installer.Config.CacheDir, installer.Target.Name(), binName)
+	binName := fmt.Sprintf("%s_%s", installer.Target.Implementation(), version)
+	destination := filepath.Join(installer.Config.CacheDir, installer.Target.Implementation(), binName)
 	err = installer.Target.AddNewVersion(version, destination)
 	if err != nil {
 		log.Error("Failed to set new version [", version, "] on destination ", destination)
@@ -104,13 +105,13 @@ func (installer *LocalInstaller) Install(constraint string) {
 		Path:    destination,
 	}
 
-	err = installer.DB.Add(installer.Target.Name(), &installment, true)
+	err = installer.DB.Add(installer.Target.Implementation(), &installment, true)
 	if err != nil {
-		log.Error("Failed to set new version for ", installer.Target.Name(), " in DB, version info: ", installment)
+		log.Error("Failed to set new version for ", installer.Target.Implementation(), " in DB, version info: ", installment)
 		log.Error(err)
 		os.Exit(1)
 	}
-	
+
 	lio.ForceSymLink(installer.BinPath, installment.Path)
 	err = lio.SetExecutable(installment.Path)
 	if err != nil {
@@ -119,7 +120,7 @@ func (installer *LocalInstaller) Install(constraint string) {
 		os.Exit(1)
 	}
 
-	logInstallation(installer.Target.Name(), version)
+	logInstallation(installer.Target.Implementation(), version)
 }
 
 func logInstallation(target string, version string) {

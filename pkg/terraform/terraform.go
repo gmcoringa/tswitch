@@ -21,7 +21,7 @@ type Terraform struct {
 	installVersion string
 }
 
-func Init() lib.Resolver {
+func InitTerraform() lib.Resolver {
 	return Terraform{
 		hashiURL:       "https://releases.hashicorp.com/terraform/",
 		name:           "terraform",
@@ -30,6 +30,10 @@ func Init() lib.Resolver {
 }
 
 func (tf Terraform) Name() string {
+	return tf.name
+}
+
+func (tf Terraform) Implementation() string {
 	return tf.name
 }
 
