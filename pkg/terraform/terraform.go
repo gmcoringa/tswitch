@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
+	"fmt"
 
 	lio "github.com/gmcoringa/tswitch/pkg/io"
 	"github.com/gmcoringa/tswitch/pkg/lib"
@@ -138,6 +139,12 @@ func unzip(zipFile string, destination string) error {
 
 		defer fileReader.Close()
 		fpath := filepath.Join(destination, file.Name) //nolint: gosec
+		fpath = filepath.Clean(fpath)
+
+		if !strings.HasPrefix(fpath, filepath.Clean(destination)+string(os.PathSeparator)) {
+			log.Error("Invalid file path: ", fpath)
+			return fmt.Errorf("invalid file path: %s", fpath)
+		}
 
 		if file.FileInfo().IsDir() {
 			err = os.MkdirAll(fpath, os.ModePerm)
