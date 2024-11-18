@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.3.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/golang/mock v1.6.0
-	github.com/hashicorp/hcl/v2 v2.22.0
+	github.com/hashicorp/hcl/v2 v2.23.0
 	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/nanobox-io/golang-scribble v0.0.0-20190309225732-aa3e7c118975
