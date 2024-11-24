@@ -3,7 +3,7 @@ module github.com/gmcoringa/tswitch
 go 1.22
 
 require (
-	github.com/Masterminds/semver/v3 v3.3.0
+	github.com/Masterminds/semver/v3 v3.3.1
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/hcl/v2 v2.23.0
