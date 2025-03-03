@@ -11,10 +11,15 @@ issues:
 linters-settings:
   gocyclo:
     # minimal code complexity to report, 30 by default (but we recommend 10-20)
-    mi-complexity: 15
+    min-complexity: 15
   gocritic:
      disabled-checks:
       - ifElseChain
+  gosec:
+    excludes:
+      # Flags for potentially-unsafe casting of ints, similar problem to globally-disabled G103
+      - G115
+
 
 linters:
   disable-all: true
@@ -30,5 +35,4 @@ linters:
   - dupl
   - nakedret
   - prealloc
-  - exportloopref
   - gocritic

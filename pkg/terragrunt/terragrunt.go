@@ -7,7 +7,7 @@ import (
 
 	lio "github.com/gmcoringa/tswitch/pkg/io"
 	"github.com/gmcoringa/tswitch/pkg/lib"
-	"github.com/go-git/go-git/v5"
+	git "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/storage/memory"
 	log "github.com/sirupsen/logrus"

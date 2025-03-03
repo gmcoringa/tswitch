@@ -8,7 +8,7 @@ import (
 
 	"github.com/gmcoringa/tswitch/pkg/util"
 	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v3"
+	yaml "gopkg.in/yaml.v3"
 )
 
 // Config ... general configuration struct.
