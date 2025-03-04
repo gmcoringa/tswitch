@@ -1,7 +1,7 @@
 package hcl
 
 import (
-	"github.com/hashicorp/hcl/v2"
+	hcl "github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 	log "github.com/sirupsen/logrus"
 )

@@ -56,7 +56,7 @@ endif
 	git push origin v$(NEW_VERSION)
 
 golangci-lint:
-	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./ v1.59.1
+	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./ v1.64.6
 	@chmod +x ${GO_LINT}
 
 lint: golangci-lint
