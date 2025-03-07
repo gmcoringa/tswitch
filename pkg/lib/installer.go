@@ -134,20 +134,19 @@ func findVersion(constraint string, versionList []string) (string, error) {
 		return "", err
 	}
 
-	versions := make([]*semver.Version, len(versionList))
-	for index, item := range versionList {
+	versions := make([]*semver.Version, 0)
+	for _, item := range versionList {
 		version, err := semver.NewVersion(item)
 
 		if err != nil {
-			log.Error("Failed to parse version ", version)
-			return "", err
+			log.Warn("Failed to parse version [", item, "] error [", err, "], ignoring")
+			continue
 		}
 
-		versions[index] = version
+		versions = append(versions, version)
 	}
 
 	sort.Sort(sort.Reverse(semver.Collection(versions)))
-
 	for _, candidate := range versions {
 		if constraints.Check(candidate) { // Validate a version against a constraint
 			version := candidate.String()

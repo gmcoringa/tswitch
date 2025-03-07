@@ -285,3 +285,47 @@ func TestVersionExistsAndIsNotCurrentDiffentImplementation(testing *testing.T) {
 
 	subject.Install(constraint)
 }
+
+// nolint:gocritic
+func TestIgnoreInvalidVersion(testing *testing.T) {
+	controller := gomock.NewController(testing)
+	defer controller.Finish()
+
+	target := "test_version_exists_not_current"
+	path := filepath.Join(config.CacheDir, target, "source")
+	constraint := ">=1.0, <1.1"
+	version := "1.0.2"
+	currentVersion := &db.BinVersion{
+		Version: "1.0.1",
+		Path:    path,
+	}
+	latestVersion := &db.BinVersion{
+		Version: "1.0.2",
+		Path:    path,
+	}
+
+	err := lio.CreateDirIfNotExist(filepath.Join(config.InstallDir))
+	assert.NoError(testing, err, "Requirement for test failed")
+	err = lio.CreateDirIfNotExist(filepath.Join(config.CacheDir, target))
+	assert.NoError(testing, err, "Requirement for test failed")
+	_, err = os.Create(path)
+	assert.NoError(testing, err, "Requirement for test failed")
+	defer os.Remove(filepath.Join(config.InstallDir, target))
+	defer os.Remove(filepath.Join(config.InstallDir, target))
+
+	mockDb := mocks.NewMockDatabase(controller)
+	mockResolver := mocks.NewMockResolver(controller)
+	mockResolver.EXPECT().Name().Return(target).AnyTimes()
+	mockResolver.EXPECT().Implementation().Return(target).AnyTimes()
+	mockResolver.EXPECT().ListVersions().Return([]string{"1.1.0", "1.0.2", "1.0.1", "alpha2025022703"}, nil)
+	mockDb.EXPECT().GetCurrent(gomock.Eq(target)).Return(currentVersion, nil)
+	mockDb.EXPECT().Get(target, version).Return(latestVersion, nil)
+
+	mockDb.EXPECT().SetCurrent(target, version).Times(1)
+	mockDb.EXPECT().Add(gomock.Any(), gomock.Any(), gomock.Any()).Times(0)
+	mockResolver.EXPECT().AddNewVersion(gomock.Any(), gomock.Any()).Times(0)
+
+	subject := lib.CreateInstaller(config, mockDb, mockResolver)
+
+	subject.Install(constraint)
+}
