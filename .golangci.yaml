@@ -1,38 +1,44 @@
-run:
-  timeout: 3m
-
-issues:
-  # exclude-use-default: true
-  exclude-dirs:
-    - mocks
-  exclude-files:
-  - ".*_test.go$"
-
-linters-settings:
-  gocyclo:
-    # minimal code complexity to report, 30 by default (but we recommend 10-20)
-    min-complexity: 15
-  gocritic:
-     disabled-checks:
-      - ifElseChain
-  gosec:
-    excludes:
-      # Flags for potentially-unsafe casting of ints, similar problem to globally-disabled G103
-      - G115
-
-
+version: "2"
 linters:
-  disable-all: true
+  default: none
   enable:
-  - gosimple
-  - staticcheck
-  - unused
-  - govet
-  - revive
-  - gocyclo
-  - gosec
-  - unconvert
-  - dupl
-  - nakedret
-  - prealloc
-  - gocritic
+    - dupl
+    - gocritic
+    - gocyclo
+    - gosec
+    - govet
+    - nakedret
+    - prealloc
+    - revive
+    - staticcheck
+    - unconvert
+    - unused
+  settings:
+    gocritic:
+      disabled-checks:
+        - ifElseChain
+    gocyclo:
+      min-complexity: 15
+    gosec:
+      excludes:
+        - G115
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - .*_test.go$
+      - mocks
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
