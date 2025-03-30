@@ -2,6 +2,7 @@ package terraform
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -9,7 +10,6 @@ import (
 	"regexp"
 	"runtime"
 	"strings"
-	"fmt"
 
 	lio "github.com/gmcoringa/tswitch/pkg/io"
 	"github.com/gmcoringa/tswitch/pkg/lib"

@@ -10,6 +10,7 @@ MINOR_VERSION     = $(word 2, $(subst ., ,$(VERSION)))
 PATCH_VERSION     = $(word 3, $(subst ., ,$(word 1,$(subst -, , $(VERSION)))))
 NEW_VERSION      ?= $(MAJOR_VERSION).$(MINOR_VERSION).$(shell echo $$(( $(PATCH_VERSION) + 1)) )
 GO_LINT           = ./golangci-lint
+LINTER_VERSION    = v2.0.2
 
 all: build
 
@@ -34,7 +35,7 @@ test: build
 .PHONY: clean
 clean:
 	"$(GOCMD)" clean -i
-	@rm -fr dist/*
+	@rm -fr dist/* golangci-lint
 
 .PHONY: fmt
 fmt:
@@ -56,7 +57,8 @@ endif
 	git push origin v$(NEW_VERSION)
 
 golangci-lint:
-	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ./ v1.64.6
+	@curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
+	| sh -s -- -b ./ ${LINTER_VERSION}
 	@chmod +x ${GO_LINT}
 
 lint: golangci-lint
