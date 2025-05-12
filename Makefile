@@ -10,7 +10,7 @@ MINOR_VERSION     = $(word 2, $(subst ., ,$(VERSION)))
 PATCH_VERSION     = $(word 3, $(subst ., ,$(word 1,$(subst -, , $(VERSION)))))
 NEW_VERSION      ?= $(MAJOR_VERSION).$(MINOR_VERSION).$(shell echo $$(( $(PATCH_VERSION) + 1)) )
 GO_LINT           = ./golangci-lint
-LINTER_VERSION    = v2.0.2
+LINTER_VERSION    = v2.1.6
 
 all: build
 
