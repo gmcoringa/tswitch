@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0
-	github.com/go-git/go-git/v5 v5.16.2
+	github.com/go-git/go-git/v5 v5.16.3
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/hcl/v2 v2.24.0
 	github.com/jcelliott/lumber v0.0.0-20160324203708-dd349441af25 // indirect
