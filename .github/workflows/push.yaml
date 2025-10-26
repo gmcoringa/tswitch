@@ -77,17 +77,17 @@ jobs:
           version: latest
           args: release --snapshot --clean
       - name: Capture Linux Binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: tswitch-linux
           path: dist/tswitch_linux_amd64/tswitch
       - name: Capture Windows Binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: tswitch-windows
           path: dist/tswitch_windows_amd64/tswitch.exe
       - name: Capture MacOS Binary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: tswitch-macos
           path: dist/tswitch_darwin_amd64/tswitch
