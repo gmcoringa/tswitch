@@ -39,7 +39,7 @@ pkg/
 
 1. Parse `terragrunt.hcl` → extract `terraform_version_constraint` and `terragrunt_version_constraint`.
 2. For each tool (terraform/tofu + terragrunt):
-   - List all available versions (HTTP scraping for Terraform, git ls-remote for Tofu/Terragrunt).
+   - List all available versions (HTTP scraping for Terraform, git remote/tag listing via the go-git remote API for Tofu/Terragrunt).
    - Resolve the best matching version using semver constraints.
    - Check local cache DB → if already installed, just update the symlink.
    - Otherwise, download + extract + cache + symlink the binary.
@@ -111,5 +111,5 @@ make promote                # Auto-increments patch version and pushes tag
 - **Do not modify** files in `mocks/` directly — they are auto-generated. Run `make mocks` after changing source interfaces.
 - **Do not commit** the `golangci-lint` binary or `dist/` directory (both are in `.gitignore`).
 - The `Resolver` interface is the extension point for adding new tool support. Each resolver knows how to list versions and download binaries for its tool.
-- Terraform versions are scraped from `releases.hashicorp.com`; Tofu and Terragrunt use git ls-remote to list tags.
+- Terraform versions are scraped from `releases.hashicorp.com`; Tofu and Terragrunt list remote Git tags via the go-git library.
 - The terraform implementation choice (`terraform` vs `tofu`) is resolved at startup via config/flag and routed through `pkg/terraform/resolver.go`.
