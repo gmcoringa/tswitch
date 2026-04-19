@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Bash(make build)",
+      "Bash(make test)",
+      "Bash(make lint)",
+      "Bash(make fmt)",
+      "Bash(make mocks)",
+      "Bash(go test ./...)",
+      "Bash(go vet ./...)",
+      "Bash(go fmt ./...)",
+      "Bash(go mod tidy)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(make promote)",
+      "Bash(git push*)",
+      "Bash(git tag*)"
+    ]
+  }
+}
