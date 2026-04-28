@@ -46,7 +46,7 @@ func (tf Terraform) ListVersions() ([]string, error) {
 	}
 
 	var versions []string
-	regex := regexp.MustCompile(`\/(\d+\.\d+\.\d+)\/?`)
+	regex := regexp.MustCompile(`\/(\d+\.\d+\.\d+)\/\"`)
 
 	for item := range result {
 		if regex.MatchString(result[item]) {
@@ -96,7 +96,7 @@ func (tf Terraform) AddNewVersion(version string, destination string) error {
 }
 
 // getURLContent : get the content of the given url
-func getURLContent(url string) ([]string, error) { //nolint: gosec
+var getURLContent = func(url string) ([]string, error) { //nolint: gosec
 	response, err := http.Get(url) //nolint: gosec
 	if err != nil {
 		log.Error("Failed to access url ", url)

@@ -1,11 +1,11 @@
-package terraform_test
+package terraform
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
-	tf "github.com/gmcoringa/tswitch/pkg/terraform"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,12 +17,32 @@ const (
 var tofuVersionData = fmt.Sprintf("%s/tofu_%s", testTofuData, tofuVersion)
 
 func TestTofuListVersions(testing *testing.T) {
-	subject := tf.InitTofu()
+	// Mock listRemoteTagsTofu
+	originalListRemoteTagsTofu := listRemoteTagsTofu
+	defer func() { listRemoteTagsTofu = originalListRemoteTagsTofu }()
 
-	result, _ := subject.ListVersions()
+	listRemoteTagsTofu = func(repoURL string) ([]*plumbing.Reference, error) {
+		return []*plumbing.Reference{
+			plumbing.NewReferenceFromStrings("refs/tags/v1.6.0-alpha1", "hash"),
+			plumbing.NewReferenceFromStrings("refs/tags/v1.7.0-beta1", "hash"),
+			plumbing.NewReferenceFromStrings("refs/tags/v1.8.0-rc1", "hash"),
+			plumbing.NewReferenceFromStrings("refs/tags/v1.8.3", "hash"),
+			plumbing.NewReferenceFromStrings("refs/tags/v1.9.0", "hash"),
+		}, nil
+	}
 
+	subject := InitTofu()
+
+	result, err := subject.ListVersions()
+
+	assert.NoError(testing, err)
 	assert.NotEmpty(testing, result)
 	assert.Contains(testing, result, tofuVersion)
+	assert.Contains(testing, result, "1.9.0")
+	assert.NotContains(testing, result, "1.6.0")
+	assert.NotContains(testing, result, "1.6.0-alpha1")
+	assert.NotContains(testing, result, "1.7.0-beta1")
+	assert.NotContains(testing, result, "1.8.0-rc1")
 }
 
 func TestTofuAddNewVersion(testing *testing.T) {
@@ -30,7 +50,7 @@ func TestTofuAddNewVersion(testing *testing.T) {
 	assert.NoError(testing, err, "Requirement failed")
 	defer os.RemoveAll(testTofuData)
 
-	subject := tf.InitTofu()
+	subject := InitTofu()
 
 	err = subject.AddNewVersion(tofuVersion, tofuVersionData)
 

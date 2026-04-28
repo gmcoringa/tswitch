@@ -1,11 +1,10 @@
-package terraform_test
+package terraform
 
 import (
 	"fmt"
 	"os"
 	"testing"
 
-	tf "github.com/gmcoringa/tswitch/pkg/terraform"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,12 +16,29 @@ const (
 var tfVersionData = fmt.Sprintf("%s/terraform_%s", testTFData, tfVersion)
 
 func TestTerraformListVersions(testing *testing.T) {
-	subject := tf.InitTerraform()
+	// Mock getURLContent
+	originalGetURLContent := getURLContent
+	defer func() { getURLContent = originalGetURLContent }()
 
-	result, _ := subject.ListVersions()
+	getURLContent = func(url string) ([]string, error) {
+		return []string{
+			`<a href="/terraform/1.15.0-rc1/">terraform_1.15.0-rc1</a>`,
+			`<a href="/terraform/1.15.0-alpha20260218/">terraform_1.15.0-alpha20260218</a>`,
+			`<a href="/terraform/1.9.1/">terraform_1.9.1</a>`,
+			`<a href="/terraform/1.8.0/">terraform_1.8.0</a>`,
+		}, nil
+	}
 
+	subject := InitTerraform()
+
+	result, err := subject.ListVersions()
+
+	assert.NoError(testing, err)
 	assert.NotEmpty(testing, result)
 	assert.Contains(testing, result, tfVersion)
+	assert.NotContains(testing, result, "1.15.0")
+	assert.NotContains(testing, result, "1.15.0-rc1")
+	assert.NotContains(testing, result, "1.15.0-alpha20260218")
 }
 
 func TestTerraformAddNewVersion(testing *testing.T) {
@@ -30,7 +46,7 @@ func TestTerraformAddNewVersion(testing *testing.T) {
 	assert.NoError(testing, err, "Requirement failed")
 	defer os.RemoveAll(testTFData)
 
-	subject := tf.InitTerraform()
+	subject := InitTerraform()
 
 	err = subject.AddNewVersion(tfVersion, tfVersionData)
 
