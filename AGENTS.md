@@ -5,7 +5,7 @@
 **tswitch** is a CLI tool written in Go that automatically switches between versions of [Terraform](https://www.terraform.io/), [OpenTofu](https://opentofu.org/), and [Terragrunt](https://terragrunt.gruntwork.io/) by reading version constraints from `terragrunt.hcl` files.
 
 - **Module path**: `github.com/gmcoringa/tswitch`
-- **Go version**: 1.24+
+- **Go version**: 1.25+
 - **License**: GNU General Public License v3
 
 ## Architecture
@@ -54,7 +54,7 @@ make build                  # Produces dist/tswitch
 make test                   # Runs all tests with -race flag
 
 # Lint
-make lint                   # Downloads golangci-lint v2.1.6 and runs it
+make lint                   # Downloads golangci-lint v2.12.2 and runs it
 
 # Format
 make fmt                    # go fmt ./...
