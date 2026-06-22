@@ -6,7 +6,7 @@ tswitch is a Go CLI tool that switches terraform/tofu and terragrunt versions ba
 
 ## Code Style
 
-- Use Go 1.24+ idioms.
+- Use Go 1.25+ idioms.
 - Always handle errors explicitly — return `error` in library functions, log + exit in `main.go`.
 - Use `logrus` (aliased as `log`) for all logging.
 - Follow existing import alias conventions: `lio` for `pkg/io`, `tf` for `pkg/terraform`, `tg` for `pkg/terragrunt`.
